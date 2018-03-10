@@ -1,0 +1,8 @@
+<%include  ../layout/header.ejs %>
+    <form action="/category/edit" method="post" class="col-md-8">
+        <input type="hidden" name="_id" value="<%= obj._id %>" class="form-control"><br>        
+        <input type="text" name="name" value="<%= obj.name %>" class="form-control"><br>        
+        <input type="submit" value="Edit" class="btn btn-info">
+    </form>
+<%include  ../layout/footer.ejs %>
+ 

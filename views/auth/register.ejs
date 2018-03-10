@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <% if(msg) { %>
+        <h1><%= msg %></h1>
+    <% } %>
+    <% if(err_msg) { %>
+        <h1><%= err_msg %></h1>
+    <% } %>
+         
+    <form action="register" method="post">
+        Username:<input type="text" name="name" ><br>
+        Password:<input type="password" name="password" >  <br>      
+        Confirm-Password:<input type="password" name="confpassword" > <br>
+        Email: <input type="email" name="email" ><br>
+        Room No:<input type="text" name="room_no" ><br>
+        Ext:<input type="text" name="ext" ><br>        
+        <input type="submit" value="Register">
+        <input type="reset" value="Reset">
+    </form>
+</body>
+</html>

@@ -1,0 +1,7 @@
+<%include  ../layout/header.ejs %>
+    <form action="/users/edit" method="post">
+        <input type="text"  name="_id" value="<%= obj._id %>"><br>
+        <input type="text" name="name" value="<%= obj.name %>"><br>        
+        <input type="submit" value="Edit">
+    </form>
+<%include  ../layout/footer.ejs %>
