@@ -6,24 +6,31 @@ var fs=require('fs');
 var mongoose = require('mongoose');
 var multer=require('multer');
 var CategoryModel=mongoose.model('categories');
+
 router.get('/add',function (req,resp) {
-    resp.render('categories/add');        
+    resp.render('categories/add',{ msg:req.flash("msg")});        
 
 });
     // var CategoryModel=mongoose.model('posts');
 
 router.post('/add',bodyParserMid,function (req,resp) {
-    var newCategory = new CategoryModel({
-        _id:mongoose.Types.ObjectId(),
-        name:req.body.name,
-           });
-    newCategory.save(function (err,doc) { 
-        if(!err){
-            resp.redirect("/category/list");
-        }else{
-            resp.json(err);
-        }
-     });
+    var categoryname=req.body.name;
+    if(categoryname==""){
+        req.flash("msg","Category Feilds Is Required");
+        return resp.redirect('add');
+    }else{
+        var newCategory = new CategoryModel({
+            _id:mongoose.Types.ObjectId(),
+            name:req.body.name,
+            });
+        newCategory.save(function (err,doc) { 
+            if(!err){
+                resp.redirect("/category/list");
+            }else{
+                resp.json(err);
+            }
+        });
+    }
 });
 router.get('/list',function (req,resp) {
     CategoryModel.find({})

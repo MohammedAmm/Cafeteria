@@ -17,7 +17,8 @@ var flash=require('connect-flash');
 
 mongoose.connect("mongodb://localhost:27017/cafeteria");
 server.use(session({
-    secret:"@#%#$^$%"
+    secret:"@#%#$^$%",
+    cookie:{maxAge:1000*60*60*24*7}
 }));
 server.use(express.static('public'))
 server.use(flash());

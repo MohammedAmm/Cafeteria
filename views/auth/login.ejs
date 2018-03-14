@@ -10,6 +10,12 @@
     <% if(msg) { %>
         <h1><%= msg %></h1>
     <% } %>
+    <% if(err_msg) { %>
+        <ul>
+            <% err_msg.forEach(function(error){ %>
+                <li style="color:red"><%= error %></li>
+              <% }) %>       <% } %>
+        </ul> 
         
     <form action="login" method="post">
         <input type="email" name="email">

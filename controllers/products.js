@@ -3,6 +3,7 @@ var router=express.Router();
 var bodyParser=require('body-parser');
 var bodyParserMid=bodyParser.urlencoded();
 var fs=require('fs');
+var validator = require('validator');
 var mongoose = require('mongoose');
 var multer=require('multer');
 var uploadMid=multer({
@@ -10,38 +11,69 @@ var uploadMid=multer({
 });
 var CategoryModel=mongoose.model('categories');
 var ProductModel=mongoose.model('products');
+var priceerr ;
 
 router.get('/add',function (req,resp) {
     CategoryModel.find({},function(err,categories){
-       resp.render('products/add',{categories:categories});        
+       resp.render('products/add',{ msg:req.flash("msg"),err_msg:priceerr,categories:categories});        
     });
 
 });
 router.post('/add',bodyParserMid,function (req,resp) {
-    var product = new ProductModel({
-        _id:mongoose.Types.ObjectId(),
-        name:req.body.name,
-        price:req.body.price,
-        category:req.body.category
-        });
-    product.save(function (err,doc) { 
-        if(!err){
-            resp.redirect("/products/list");
-        }else{
-            resp.json(err);
+    var productname=req.body.name;
+    var price=req.body.price;
+    var priceValidation = validator.isNumeric(price);
+    console.log(priceValidation);
+
+    if(productname==""||price==""){
+        req.flash("msg","All Feilds Are Required");
+        return resp.redirect('add');
+    }else {
+        if(!priceValidation){
+            priceerr = 'Price Must Be Numbers';   
         }
-        //resp.json(req.body);
-     });
+    }    
+    if(!priceerr==''){
+        console.log(priceerr)
+        resp.redirect("add");
+    }
+    else{
+
+
+        var product = new ProductModel({
+            _id:mongoose.Types.ObjectId(),
+            name:req.body.name,
+            price:req.body.price,
+            category:req.body.category
+            });
+        product.save(function (err,doc) { 
+            if(!err){
+                resp.redirect("/products/list");
+            }else{
+                resp.json(err);
+            }
+            //resp.json(req.body);
+        });
+    }
 });
 router.get('/list',function (req,resp) {
-    ProductModel.find({})
-    .sort({_id:-1})
-    .populate({path:"category",select:"name"})
-    .then(function (result,err) {
-        if(result){
-            resp.render('products/list',{data:result,msg:req.flash('msg')});     
-        }
-      });
+
+    console.log(req.session.useremail);
+    console.log(req.session.password);
+
+    if (!req.session.useremail){
+        resp.redirect('/login');
+    }
+    else{
+        ProductModel.find({})
+        .sort({_id:-1})
+        .populate({path:"category",select:"name"})
+        .then(function (result,err) {
+            if(result){
+                resp.render('products/list',{data:result,msg:req.flash('msg')});     
+            }
+        });
+    }
 
 });
 router.get('/delete/:id',function (req,resp) {

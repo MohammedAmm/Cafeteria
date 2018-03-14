@@ -1,6 +1,8 @@
 <%include  ../layout/header.ejs %>
 <div class="col-6">
-
+        <% if(msg) { %>
+            <h1><%= msg %></h1>
+        <% } %>
     <form action="/category/add" method="post" class="form-control">
         Category:<input type="text" class="form-control"name="name" value=""><br>        
         <input type="submit"class="btn btn-success" value="Save">
