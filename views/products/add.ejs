@@ -1,5 +1,14 @@
 <%include  header.ejs %>
 <div class="col-6">
+        <% if(msg) { %>
+            <h1><%= msg %></h1>
+        <% } %>
+        <% if(err_msg) { %>
+            <ul>
+                
+                    <li style="color:red"><%= err_msg %></li>
+                    <% } %>
+            </ul> 
     <form action="/products/add" method="post" class="form-control">
      
         Product:<input type="text" class="form-control"name="name" value=""><br>   

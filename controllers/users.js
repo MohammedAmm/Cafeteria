@@ -5,6 +5,7 @@ var bodyParserMid=bodyParser.urlencoded();
 var fs=require('fs');
 var mongoose = require('mongoose');
 var multer=require('multer');
+var validator = require('node-validator');
 var uploadMid=multer({
     dest:"./public/imgs"
 });
