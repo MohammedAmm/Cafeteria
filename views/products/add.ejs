@@ -1,24 +1,34 @@
 <%include  header.ejs %>
-<div class="col-6">
+    <div class="col-6">
         <% if(msg) { %>
-            <h1><%= msg %></h1>
-        <% } %>
-        <% if(err_msg) { %>
-            <ul>
-                
-                    <li style="color:red"><%= err_msg %></li>
-                    <% } %>
-            </ul> 
-    <form action="/products/add" method="post" class="form-control">
-     
-        Product:<input type="text" class="form-control"name="name" value=""><br>   
-        Price:EGP<input type="text" class="form-control"name="price" value=""><br>    
-        Category:<select  class="form-control" name="category" id="">
-            <% categories.forEach(function(category){ %>
-                <option value="<%= category._id %>"><%= category.name %></option>
-                <% }) %>
-        </select>                 
-        <input type="submit"class="btn btn-success" value="Save">
-    </form>
+            <h1>
+                <%= msg %>
+            </h1>
+            <% } %>
+                <% if(err_msg) { %>
+                    <ul>
+
+                        <li style="color:red">
+                            <%= err_msg %>
+                        </li>
+                        <% } %>
+                    </ul>
+                    <form action="/products/add" method="post" class="form-control" enctype="multipart/form-data">
+
+                        Product:
+                        <input type="text" class="form-control" name="name" value="">
+                        <br> Price:EGP
+                        <input type="text" class="form-control" name="price" value="">
+                        <br> Category:
+                        <select class="form-control" name="category" id="">
+                            <% categories.forEach(function(category){ %>
+                                <option value="<%= category._id %>">
+                                    <%= category.name %>
+                                </option>
+                                <% }) %>
+                        </select>
+                        <input type="file" name="avatar" id="avatar">
+                        <input type="submit" class="btn btn-success" value="Save">
+                    </form>
     </div>
-<%include  footer.ejs %>
+    <%include  footer.ejs %>

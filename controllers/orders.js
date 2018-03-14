@@ -12,9 +12,14 @@ var ProductModel=mongoose.model('products');
 var OrderModel=mongoose.model('orders');
 
 router.get('/add',function (req,resp) {
-    ProductModel.find({},function(err,products){
-       resp.render('orders/add',{products:products});        
-    });
+    if (!req.session.useremail){
+        resp.redirect('/login');
+    }
+    else{
+        ProductModel.find({},function(err,products){
+        resp.render('orders/add',{products:products});        
+        });
+    }
 
 });
 router.post('/add',bodyParserMid,function (req,resp) {

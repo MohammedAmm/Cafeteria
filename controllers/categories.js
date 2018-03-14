@@ -8,8 +8,12 @@ var multer=require('multer');
 var CategoryModel=mongoose.model('categories');
 
 router.get('/add',function (req,resp) {
-    resp.render('categories/add',{ msg:req.flash("msg")});        
-
+    if (!req.session.useremail){
+        resp.redirect('/login');
+    }
+    else{
+        resp.render('categories/add',{ msg:req.flash("msg")});        
+    }
 });
     // var CategoryModel=mongoose.model('posts');
 
@@ -33,14 +37,19 @@ router.post('/add',bodyParserMid,function (req,resp) {
     }
 });
 router.get('/list',function (req,resp) {
-    CategoryModel.find({})
-    .sort({_id:-1})
-    .populate({path:"user",select:"name"})
-    .then(function (result,err) {
-        if(result){
-            resp.render('categories/list',{data:result,msg:req.flash('msg')});     
-        }
-      });
+    if (!req.session.useremail){
+        resp.redirect('/login');
+    }
+    else{
+        CategoryModel.find({})
+        .sort({_id:-1})
+        .populate({path:"user",select:"name"})
+        .then(function (result,err) {
+            if(result){
+                resp.render('categories/list',{data:result,msg:req.flash('msg')});     
+            }
+        });
+    }
 });
 router.get('/delete/:id',function (req,resp) {
     CategoryModel.remove({_id:req.params.id},function (err,result) { 

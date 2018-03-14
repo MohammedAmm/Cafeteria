@@ -21,8 +21,7 @@ router.get('/login', function (req, resp) {
         msg: req.flash("msg"),
         err_msg: errL
     });
-
-
+    errL = [];
 });
 router.post('/login', bodyParserMid, function (req, resp) {
     // errL = [];
@@ -40,6 +39,7 @@ router.post('/login', bodyParserMid, function (req, resp) {
     if (useremail == "" || pass == "") {
         req.flash("msg", "Email and Password is required");
         return resp.redirect('login');
+        errL = [];
     }
     else {
         if (!emailValidation) {
@@ -51,11 +51,12 @@ router.post('/login', bodyParserMid, function (req, resp) {
             errL.push(passerr);
         }
     }
-    console.log(err);
+
 
     if (!errL) {
         console.log(errL);
         resp.redirect("login");
+        errL = [];
     }
     else {
         UserModel.findOne({ email: req.body.email }, function (err, doc) {
@@ -64,7 +65,7 @@ router.post('/login', bodyParserMid, function (req, resp) {
                 //  correctPassword?console.log("true"):console.log("false");
                 if (correctPassword) {
                     req.session.useremail = useremail;
-                    console.log(req.session.useremail);
+                    //                    console.log(req.session.useremail);
 
                     return resp.redirect('products/list');
                 } else {
@@ -87,6 +88,7 @@ router.get('/register', function (req, resp) {
         err_msg: err
 
     });
+    err = [];
 });
 //to compare hashed bcrypt.compareSync("my password", hash);
 
@@ -135,9 +137,13 @@ router.post('/register', upload.single('avatar'), function (req, resp) {
             err.push(emailerr);
 
         }
-        if (!pass == confpass) {
+        if (pass != confpass) {
             confpasserr = "confirm password is not matched with password";
             err.push(confpasserr);
+        }
+        if (!room_noValidation) {
+            room_noerr = "Room_no is Invalid";
+            err.push(room_noerr);
 
         }
         if (!room_noValidation) {
@@ -155,8 +161,9 @@ router.post('/register', upload.single('avatar'), function (req, resp) {
 
 
 
-    console.log(err);
-    if (!err) {
+    // console.log(err);
+    //    resp.json(err);
+    if (err.length > 0) {
         console.log(err);
         resp.redirect("register");
     }
@@ -170,23 +177,23 @@ router.post('/register', upload.single('avatar'), function (req, resp) {
             email: req.body.email,
             room_no: parseInt(req.body.room_no),
             ext: parseInt(req.body.ext),
+            img: req.file.filename
         });
-
-        newUser.save(function (err, doc) {
-            if (!err) {
+        newUser.save(function (addError, doc) {
+            if (!addError) {
                 req.session.useremail = useremail;
                 console.log("Success");
                 resp.redirect('/products/list');
             } else {
-                //resp.json(err);
-                switch (err.code) {
+                //resp.json(addError);
+                switch (addError.code) {
                     case 11000:
-                        req.flash("err_msg", "email already exits");
+                        err.push("Email already exits");
                         return resp.redirect('register');
                         break;
 
                     default:
-                        req.flash("err_msg", "email already exits");
+                        err.push("Email already exits");
                         return resp.redirect('register');
                         break;
                 }
