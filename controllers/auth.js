@@ -21,8 +21,7 @@ router.get('/login',function (req,resp) {
         msg:req.flash("msg"),
         err_msg:errL
     });
-
-
+    errL=[];
 });
 router.post('/login',bodyParserMid,function (req,resp) {
     errL=[];
@@ -40,6 +39,7 @@ router.post('/login',bodyParserMid,function (req,resp) {
     if(useremail==""||pass==""){
         req.flash("msg","Email and Password is required");
         return resp.redirect('login');
+        errL=[];
     }
     else {
         if(!emailValidation){
@@ -51,11 +51,12 @@ router.post('/login',bodyParserMid,function (req,resp) {
             errL.push(passerr); 
         }
     } 
-    console.log(err);
+  //  console.log(err);
 
     if(!errL){
         console.log(errL);
         resp.redirect("login");
+        errL=[];
     }
     else{
         UserModel.findOne({email:req.body.email},function (err,doc) {
@@ -64,7 +65,7 @@ router.post('/login',bodyParserMid,function (req,resp) {
             //  correctPassword?console.log("true"):console.log("false");
             if(correctPassword){
                 req.session.useremail = useremail;
-                console.log(req.session.useremail);
+            //    console.log(req.session.useremail);
 
                 return resp.redirect('products/list');
             }else{
@@ -87,17 +88,18 @@ router.get('/register',function (req,resp) {
         err_msg:err
 
     });
+    err=[];
 });
 //to compare hashed bcrypt.compareSync("my password", hash);
 router.post('/register',bodyParserMid,function (req,resp) {
     err=[];
+    console.log(req.body);
     var username=req.body.name;
     var pass=req.body.password;
     var confpass=req.body.confpassword;
     var useremail=req.body.email;
     var room_no=req.body.room_no;
     var ext=req.body.ext;
-
     var nameValidation1 = validator.isAlpha(username);
     var nameValidation2 = validator.isLength(username,{min:8});
     var emailValidation = validator.isEmail(useremail,{ min:8});
@@ -121,7 +123,7 @@ router.post('/register',bodyParserMid,function (req,resp) {
             }
             if(!passValidation1||!passValidation2){
                 passerr = "Password Must Contain Lowercase Letter, Capital Letter,Numbers And At Least Be 8 Characters";
-                err.push(passerr);  
+                    err.push(passerr);  
 
             }
             if(!emailValidation){
@@ -129,10 +131,9 @@ router.post('/register',bodyParserMid,function (req,resp) {
                 err.push(emailerr);  
  
             }
-            if (!pass==confpass){
+            if (pass!=confpass){
                 confpasserr = "confirm password is not matched with password";
                 err.push(confpasserr);  
-
             }
             if (!room_noValidation){
                 room_noerr = "Room_no is Invalid";
@@ -149,8 +150,9 @@ router.post('/register',bodyParserMid,function (req,resp) {
 
     
 
-        console.log(err);
-        if(!err){
+       // console.log(err);
+    //    resp.json(err);
+        if(err.length>0){
             console.log(err);
             resp.redirect("register");
         }
@@ -165,23 +167,22 @@ router.post('/register',bodyParserMid,function (req,resp) {
                 room_no:parseInt(req.body.room_no),
                 ext:parseInt(req.body.ext),
             });
-
-            newUser.save(function (err,doc) { 
-                if(!err){
+            newUser.save(function (addError,doc) { 
+                if(!addError){
                     req.session.useremail = useremail;
                     console.log("Success");
                     resp.redirect('/products/list');
                 }else{
-                    //resp.json(err);
-                    switch (err.code) {
+                    //resp.json(addError);
+                    switch (addError.code) {
                         case 11000:
-                            req.flash("err_msg","email already exits");
+                            err.push("Email already exits");  
                             return resp.redirect('register');
                             break;
                     
                         default:
-                        req.flash("err_msg","email already exits");
-                        return resp.redirect('register');
+                            err.push("Email already exits");  
+                            return resp.redirect('register');
                             break;
                     }
                 }

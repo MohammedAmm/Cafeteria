@@ -14,9 +14,14 @@ var ProductModel=mongoose.model('products');
 var priceerr ;
 
 router.get('/add',function (req,resp) {
-    CategoryModel.find({},function(err,categories){
-       resp.render('products/add',{ msg:req.flash("msg"),err_msg:priceerr,categories:categories});        
-    });
+    if (!req.session.useremail){
+        resp.redirect('/login');
+    }
+    else{
+            CategoryModel.find({},function(err,categories){
+            resp.render('products/add',{ msg:req.flash("msg"),err_msg:priceerr,categories:categories});        
+        });
+    }
 
 });
 router.post('/add',bodyParserMid,function (req,resp) {
