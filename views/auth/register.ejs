@@ -1,31 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
     <% if(msg) { %>
-        <h1><%= msg %></h1>
-    <% } %>
-    <% if(err_msg) { %>
-        <ul>
-            <% err_msg.forEach(function(error){ %>
-                <li style="color:red"><%= error %></li>
-              <% }) %>       <% } %>
-        </ul> 
-   
-    <form action="register" method="post">
-        Username:<input type="text" name="name"  ><br>
-        Password:<input type="password" name="password" >  <br>      
-        Confirm-Password:<input type="password" name="confpassword" > <br>
-        Email: <input type="email" name="email" ><br>
-        Room No:<input type="text" name="room_no" ><br>
-        Ext:<input type="text" name="ext" ><br>        
-        <input type="submit" value="Register">
-        <input type="reset" value="Reset">
-    </form>
+        <h1>
+            <%= msg %>
+        </h1>
+        <% } %>
+            <% if(err_msg) { %>
+                <ul>
+                    <% err_msg.forEach(function(error){ %>
+                        <li style="color:red">
+                            <%= error %>
+                        </li>
+                        <% }) %>
+                            <% } %>
+                </ul>
+
+                <form action="register" method="post">
+                    Username:
+                    <input type="text" name="name">
+                    <br> Password:
+                    <input type="password" name="password">
+                    <br> Confirm-Password:
+                    <input type="password" name="confpassword">
+                    <br> Email:
+                    <input type="email" name="email">
+                    <br> Room No:
+                    <input type="text" name="room_no">
+                    <br> Ext:
+                    <input type="text" name="ext">
+                    <br> Image:
+                    <input type="file" name="avatar" id="avatar">
+                    <input type="submit" value="Register">
+                    <input type="reset" value="Reset">
+                </form>
 </body>
+
 </html>
