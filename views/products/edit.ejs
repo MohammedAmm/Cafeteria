@@ -1,6 +1,6 @@
 <%include  header.ejs %>
 <div class="col-6">
-    <form action="/products/edit" method="post" class="form-control">  
+    <form action="/products/edit" method="post" class="form-control" enctype="multipart/form-data">  
         <input type="hidden" class="form-control"name="_id" value="<%= obj._id %>"><br>      
         Product:<input type="text" class="form-control"name="name" value="<%= obj.name %>"><br>   
         Price:EGP<input type="text" class="form-control"name="price" value="<%= obj.price %>"><br>    
@@ -13,7 +13,9 @@
                     <option value="<%= category._id %>"><%= category.name %></option>
                     <%}%>
                 <% }) %>
-        </select>                 
+        </select>
+        <br>
+        <input type="file" name="avatar" id="avatar"> <br><br>         
         <input type="submit"class="btn btn-info" value="Edit">
     </form>
     </div>

@@ -14,6 +14,7 @@
         <th>
             Category
         </th>
+        <th>Image</th>
         <th>Action</th>
     </tr>
     <% data.forEach(function(product){%>
@@ -27,9 +28,10 @@
 
             </td>
             <td>
-                <%= product.category %>
+                <%= product.category.name %>
 
             </td>
+            <td><img src="/imgs/<%= product.img %>" width="100" height="100" alt="img"></td>
             <td><a class="btn btn-danger" href="/products/delete/<%= product._id %>">Delete</a>
             <a class="btn btn-primary" href="/products/edit/<%= product._id %>">Edit</a></td>            
         </tr>

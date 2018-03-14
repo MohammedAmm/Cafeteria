@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="/js/socket.io.js"></script>
+    <script src="/js/jquery-3.2.1.js"></script>    
+    <script>
+        var socket = io('http://localhost:9090');
+        $(function(){
+            var send=$('#send');
+            var order=$('#order');
+            var username=$('#username');
+            var admin=$('#admin');
+            
+            send.click(function(){
+                console.log(admin.val());
+                socket.emit('user_data',{username:username.val(),admin:admin.val()})
+                username.val("");
+                admin.val("");                
+
+            });
+            order.click(function(){
+                socket.emit('request_order')
+
+            })
+        });
+        socket.on("client_order",(data)=>{
+            alert(data);
+        });
+;
+    </script>
+</head>
+<body>
+    Welcome , client......  
+    <br>
+    <input type="text" name="username" id="username"><br>
+    <input type="text" name="admin" id="admin"><br>
+    <button id="send">Send</button><br>
+    <button id="order">Order</button>
+
+
+</body>
+</html>

@@ -6,11 +6,8 @@ var multer = require('multer');
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 var validator = require('validator');
-
 var err = [];
 var errL = [];
-
-
 var uploadMid = multer({
     dest: "./public/imgs"
 });
@@ -28,14 +25,10 @@ router.post('/login', bodyParserMid, function (req, resp) {
     var useremail = req.body.email;
     var pass = req.body.password;
     var correctPassword;
-
-
-
     var emailValidation = validator.isEmail(useremail, { min: 8 });
     var passValidation1 = validator.matches(pass, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/);
     var passValidation2 = validator.isByteLength(pass, { min: 8 });
-
-
+    var imgValidation='';
     if (useremail == "" || pass == "") {
         req.flash("msg", "Email and Password is required");
         return resp.redirect('login');
@@ -113,9 +106,12 @@ router.post('/register', upload.single('avatar'), function (req, resp) {
     var passValidation2 = validator.isByteLength(pass, { min: 8 });
     var room_noValidation = validator.isInt(room_no, { min: 4 });
     var extValidation = validator.isInt(ext, { min: 4 });
-
-    var nameerr, emailerr, passerr, confpasserr, room_noerr, exterr = "";
-
+    
+    var nameerr, emailerr, passerr, confpasserr, room_noerr, exterr,imgerr = "";
+    if(!req.file.mimetype.match('image.*')){
+       // console.log("valide");
+       imgerr="Not valide file type, image only allowed";
+    }
     if (useremail == "" || pass == "" || username == "" || confpass == "" || room_no == "" || ext == "") {
         req.flash("msg", "All Feilds Are Required");
         return resp.redirect('register');
@@ -156,13 +152,12 @@ router.post('/register', upload.single('avatar'), function (req, resp) {
             err.push(exterr);
 
         }
+        if(imgerr){
+            err.push(imgerr);
+
+        }
 
     }
-
-
-
-    // console.log(err);
-    //    resp.json(err);
     if (err.length > 0) {
         console.log(err);
         resp.redirect("register");
@@ -199,14 +194,11 @@ router.post('/register', upload.single('avatar'), function (req, resp) {
                 }
             }
         });
-
     }
-
 });
 router.get('/logout', function (req, resp) {
     req.session.destroy(function () {
         resp.redirect('login');
     })
 })
-
 module.exports = router;
