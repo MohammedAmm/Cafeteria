@@ -25,17 +25,17 @@ router.get('/login',function (req,resp) {
 
 });
 router.post('/login',bodyParserMid,function (req,resp) {
-    err=[];
+    errL=[];
     var useremail=req.body.email;
     var pass=req.body.password;
     var correctPassword;
 
 
+
     var emailValidation = validator.isEmail(useremail,{ min:8});
-    var passValidation1 = validator.matches(pass,/^[a-z]*$/);
-    var passValidation2 = validator.matches(pass,/^[0-9]*$/);
-    var passValidation3 = validator.matches(pass,/^[A-Z]*$/);
-    var passValidation4 = validator.isByteLength(pass,{ min:8});
+    var passValidation1 = validator.matches(pass,/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/);
+    var passValidation2 = validator.isByteLength(pass,{ min:8});
+    
 
     if(useremail==""||pass==""){
         req.flash("msg","Email and Password is required");
@@ -46,7 +46,7 @@ router.post('/login',bodyParserMid,function (req,resp) {
             var emailerr = 'Email Is Invalid';  
             errL.push(emailerr); 
         }   
-       if(!passValidation1||!passValidation2||!passValidation3||!passValidation4){
+       if(!passValidation1||!passValidation2){
             var passerr = "Password Is Invalid";
             errL.push(passerr); 
         }
@@ -63,6 +63,8 @@ router.post('/login',bodyParserMid,function (req,resp) {
             correctPassword= bcrypt.compareSync(req.body.password,doc.password);
             //  correctPassword?console.log("true"):console.log("false");
             if(correctPassword){
+                req.session.useremail = useremail;
+                req.session.password = pass;
                 return resp.redirect('products/list');
             }else{
                 req.flash("msg","password not correct");
@@ -104,10 +106,6 @@ router.post('/register',bodyParserMid,function (req,resp) {
     var extValidation = validator.isInt(ext,{min:4});
 
     var nameerr, emailerr , passerr , confpasserr , room_noerr , exterr="";
-
-    //console.log(passValidation1);
-    //console.log(nameValidation1);
-    //console.log(nameValidation2);
 
     if(useremail==""||pass==""||username==""||confpass==""||room_no==""||ext==""){
         req.flash("msg","All Feilds Are Required");
@@ -169,7 +167,10 @@ router.post('/register',bodyParserMid,function (req,resp) {
 
             newUser.save(function (err,doc) { 
                 if(!err){
-                    resp.redirect("login");
+                    req.session.useremail = useremail;
+                    req.session.password = pass;
+                    console.log("Success");
+                    resp.redirect('/products/list');
                 }else{
                     //resp.json(err);
                     switch (err.code) {
@@ -184,7 +185,6 @@ router.post('/register',bodyParserMid,function (req,resp) {
                             break;
                     }
                 }
-                resp.json(req.body);
             });
 
         }
