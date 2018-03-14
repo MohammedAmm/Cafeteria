@@ -64,7 +64,8 @@ router.post('/login',bodyParserMid,function (req,resp) {
             //  correctPassword?console.log("true"):console.log("false");
             if(correctPassword){
                 req.session.useremail = useremail;
-                req.session.password = pass;
+                console.log(req.session.useremail);
+
                 return resp.redirect('products/list');
             }else{
                 req.flash("msg","password not correct");
@@ -168,7 +169,6 @@ router.post('/register',bodyParserMid,function (req,resp) {
             newUser.save(function (err,doc) { 
                 if(!err){
                     req.session.useremail = useremail;
-                    req.session.password = pass;
                     console.log("Success");
                     resp.redirect('/products/list');
                 }else{

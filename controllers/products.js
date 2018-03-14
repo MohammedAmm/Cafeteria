@@ -57,14 +57,23 @@ router.post('/add',bodyParserMid,function (req,resp) {
     }
 });
 router.get('/list',function (req,resp) {
-    ProductModel.find({})
-    .sort({_id:-1})
-    .populate({path:"category",select:"name"})
-    .then(function (result,err) {
-        if(result){
-            resp.render('products/list',{data:result,msg:req.flash('msg')});     
-        }
-      });
+
+    console.log(req.session.useremail);
+    console.log(req.session.password);
+
+    if (!req.session.useremail){
+        resp.redirect('/login');
+    }
+    else{
+        ProductModel.find({})
+        .sort({_id:-1})
+        .populate({path:"category",select:"name"})
+        .then(function (result,err) {
+            if(result){
+                resp.render('products/list',{data:result,msg:req.flash('msg')});     
+            }
+        });
+    }
 
 });
 router.get('/delete/:id',function (req,resp) {
