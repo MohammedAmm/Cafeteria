@@ -1,38 +1,64 @@
-<%include  header.ejs %>
-<h1>Products List</h1>
+<%include   ../layout/header.ejs %>
+<h1>Orders List</h1>
 <% if(!msg){ %>
     <h3 class="alert alert-success"><%= msg %></h3>
     <% }%>
+
+
+<% data.forEach(function(order){ %>
+
+
+
 <table class="table table-bordered">
     <tr>    
         <th>
-            Name
+            User
         </th>
+            
         <th>
             Price
         </th>
-        <th>
-            Category
-        </th>
-        <th>Action</th>
+      
     </tr>
-    <% data.forEach(function(product){ %>
+</tr>
+   
+<tr>
+    <td>
+        <%= order.user.name %>
+    </td>
+    <td>
+        <%= order.price %>
+
+    </td>
+   
+
+       
+</table>
+<% }) %>
+<% data.forEach(function(order){ %>
+<table class="table table-bordered">
+    <tr>    
+        <th>
+            order date
+        </th>
+            
+        <th>
+            Price
+        </th>
+      
+    </tr>
+   
         <tr>
             <td>
-                <%= product.name %>
-
+                <%= order.date %>
             </td>
             <td>
-                <%= product.price %>
+                <%= order.price %>
 
             </td>
-            <td>
-                <%= product.category.name %>
-
-            </td>
-            <td><a class="btn btn-danger" href="/products/delete/<%= product._id %>">Delete</a>
-            <a class="btn btn-primary" href="/products/edit/<%= product._id %>">Edit</a></td>            
-        </tr>
-        <% }) %>
+           
+       
 </table>
-<%include  footer.ejs %>
+
+<% }) %>
+<%include   ../layout/footer.ejs %>

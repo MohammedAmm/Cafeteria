@@ -46,6 +46,21 @@ router.post('/add',bodyParserMid,function (req,resp) {
         //resp.json(req.body);
      });
 });
+
+router.get('/list',function (req,resp) {
+    OrderModel.find({/*"created_on": {"$gte": req.body.from, "$lt": req.body.to*/})
+    .sort({_id:-1})
+    .populate({path:"products",select:"name"})
+    .populate({path:"user",select:"name"})
+    .then(function (result,err) {
+        if(result){
+            console.log(result);
+            
+            resp.render('orders/list',{data:result,msg:req.flash('msg')});     
+        }
+      });
+
+});
 // router.get('/list',function (req,resp) {
 //     ProductModel.find({})
 //     .sort({_id:-1})

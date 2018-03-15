@@ -9,6 +9,10 @@ var orders=new Schema({
     price:String,
     room:String,
     notes:String,
+    date:{
+        type:Date,
+        default:Date.now
+    },
     products:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"products"
