@@ -16,8 +16,16 @@ router.get('/add',function (req,resp) {
         resp.redirect('/login');
     }
     else{
+        var categoriesPro;
+        CategoryModel.find({},function(err,categories){
+            categoriesPro=categories;
+        });
         ProductModel.find({},function(err,products){
+<<<<<<< HEAD
              resp.render('orders/add',{products:products});        
+=======
+            resp.render('orders/add',{products:products,categories:categoriesPro});        
+>>>>>>> 459ea3277ce6ee06ad619e701397aab94fa70c7b
         });
 
     }
@@ -29,7 +37,10 @@ router.post('/add',bodyParserMid,function (req,resp) {
         _id:mongoose.Types.ObjectId(),
         user:req.session._id,
         room:req.body.room_no,
+<<<<<<< HEAD
         price:req.body.price,
+=======
+>>>>>>> 459ea3277ce6ee06ad619e701397aab94fa70c7b
         notes:req.body.notes,
         products:req.body.products,
         });
