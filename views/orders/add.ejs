@@ -7,7 +7,6 @@
         <h3 style="text-align:center; margin-top:-80px;">Menu</h3>
         <div class="row">
             <div class="col-8">           
-<<<<<<< HEAD
            
                     <div class="div-tabs">
                         <div  id="" class="tab-content">             
@@ -23,36 +22,6 @@
                             <div class="clear"></div>
                         </div>          
                     </div>
-=======
-                <% categories.forEach(function(category,index){ %>
-                    <div class="div-nav ">
-                            <div class="grid_12">
-                                <ul class="nav">  
-                                    <% if(index==0){%>
-                                        <li class="selected"><a href="#xx<%=index%>"><%= category.name %></a></li>  
-                                    <%}else{%>
-                                        <li class=""><a href="#<%=category.name%>"><%= category.name %></a></li>  
-                                        <%}%>    
-                                </ul>
-                            </div>    
-                    </div>
-                    <div class="div-tabs">
-                        <div  id="<%=category.name%>" class="tab-content">             
-                            <% products.forEach(function(product){ %>
-                                <%if(category._id==product.category._id){%>
-                                    <div class="grid_3">
-                                        <img src="/imgs/<%= product.img %>" id="product"alt="" class="gal" name="<%= product.name %>" value="<%= product._id %>"><span></span>
-                                        <div class="col2"><span class="col3"><a href="#"><%= product.name %> </a></span> <%= product.price %></div>
-                                    </div>
-                                <%}%>
-                            <% }) %>     
-                            <div class="clear"></div>
-                        </div>
-                                    
-                    
-                    </div>
-                    <% }) %>
->>>>>>> 459ea3277ce6ee06ad619e701397aab94fa70c7b
                 </div>                
             <div class="col-4">
                     <div class="tabs tb gallery">
@@ -70,25 +39,18 @@
                         <textarea   name="notes" class="form-control" placeholder="Enter your notes here...."></textarea>
                         </div>
                     </div>
-<<<<<<< HEAD
                     <div class="row form-group">
                         <div class="col-md-12">
                             <label for="price">Price</label>
                             <label id="totalPrice" style="margin-left:70%;">0</label><span style="float:right">EGP</span>
                         </div>
                     </div>
-=======
-                
->>>>>>> 459ea3277ce6ee06ad619e701397aab94fa70c7b
                     <div class="row form-group">
                         <div class="col-md-12">
                         <input type="submit" class="btn btn-primary btn-block" value="Order Now">
                         </div>
                     </div>
-<<<<<<< HEAD
                     <input type="hidden" name="price" id="sendPrice">
-=======
->>>>>>> 459ea3277ce6ee06ad619e701397aab94fa70c7b
                 </form>
                   
                 
@@ -114,7 +76,6 @@
         });
     </script>
     <script>
-<<<<<<< HEAD
         var totalPrice=$('#totalPrice')[0];
          inputs='';
             $("img").one("click",function(){
@@ -127,16 +88,6 @@
                         class:'form-control ',
                         value:'1',
                         style:'margin:20px;'
-=======
-     
-            $("#product").one("click",function(){
-                    $('<input>').attr({
-                        type: 'number',
-                        id: $(this).attr('name'),
-                        name: $(this).attr('name'),
-                        class:'row form-group form-control ',
-                        value:'1'
->>>>>>> 459ea3277ce6ee06ad619e701397aab94fa70c7b
                         }).prependTo('form');
                     
                     $('<label>').attr({
@@ -147,7 +98,6 @@
                         name: 'products',
                         value:$(this).attr('value')
                         }).prependTo('form');
-<<<<<<< HEAD
                         totalPrice=parseInt($(this).attr('price'))+parseInt($('#totalPrice')[0].innerText);
                             $('#totalPrice')[0].innerText=totalPrice;
                             $('input').change(function(){
@@ -172,11 +122,6 @@
                   
                 });
         
-=======
-        });
-        
-      
->>>>>>> 459ea3277ce6ee06ad619e701397aab94fa70c7b
         </script>   
     <script>
         var socket = io('http://localhost:9090');
