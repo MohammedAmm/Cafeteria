@@ -1,19 +1,75 @@
-<%include  header.ejs %>
-<div class="row">
-    <div class="col-6">
-        <form action="/orders/add" method="post" class="form-control" id="myForm">     
-            <input type="submit" value="Order" id="order">
-        </form>
-        <% products.forEach(function(product){ %>
-            <button value="<%= product._id %>"><%= product.name %></button>
-        <% }) %>
+<%include  ../layout/header.ejs %>
+
+  <!--==============================Content=================================-->
+  
+  <div class="content"><div class="ic">More Website Templates @ TemplateMonster.com - December 02, 2013!</div>
+    <div class="container_12">
+        <h3 style="text-align:center; margin-top:-80px;">Menu</h3>
+        <div class="row">
+            <div class="col-8">           
+                <% categories.forEach(function(category,index){ %>
+                    <div class="div-nav ">
+                            <div class="grid_12">
+                                <ul class="nav">  
+                                    <% if(index==0){%>
+                                        <li class="selected"><a href="#xx<%=index%>"><%= category.name %></a></li>  
+                                    <%}else{%>
+                                        <li class=""><a href="#<%=category.name%>"><%= category.name %></a></li>  
+                                        <%}%>    
+                                </ul>
+                            </div>    
+                    </div>
+                    <div class="div-tabs">
+                        <div  id="<%=category.name%>" class="tab-content">             
+                            <% products.forEach(function(product){ %>
+                                <%if(category._id==product.category._id){%>
+                                    <div class="grid_3">
+                                        <img src="/imgs/<%= product.img %>" id="product"alt="" class="gal" name="<%= product.name %>" value="<%= product._id %>"><span></span>
+                                        <div class="col2"><span class="col3"><a href="#"><%= product.name %> </a></span> <%= product.price %></div>
+                                    </div>
+                                <%}%>
+                            <% }) %>     
+                            <div class="clear"></div>
+                        </div>
+                                    
+                    
+                    </div>
+                    <% }) %>
+                </div>                
+            <div class="col-4">
+                    <div class="tabs tb gallery">
+                            <!-- end of form -->
+                <form action="/orders/add" method="POST"    
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label for="activities">Room</label>
+                               <input type="text"  name="room_no"id="activities" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                        <label for="date-start">Note</label>
+                        <textarea   name="notes" class="form-control" placeholder="Enter your notes here...."></textarea>
+                        </div>
+                    </div>
+                
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                        <input type="submit" class="btn btn-primary btn-block" value="Order Now">
+                        </div>
+                    </div>
+                </form>
+                  
+                
+            </div>
+        </div>
     </div>
-
-</div>
-
-    <script src="/js/jquery-3.2.1.js"></script>   
-    <script src="/js/socket.io.js"></script>
- 
+     
+    </div>
+  </div>
+  
+  <!--==============================footer=================================-->
+    <script src="/js/socket.io.js"></script> 
     <script>
         var products='';
         $(function(){
@@ -26,6 +82,29 @@
             })        
         });
     </script>
+    <script>
+     
+            $("#product").one("click",function(){
+                    $('<input>').attr({
+                        type: 'number',
+                        id: $(this).attr('name'),
+                        name: $(this).attr('name'),
+                        class:'row form-group form-control ',
+                        value:'1'
+                        }).prependTo('form');
+                    
+                    $('<label>').attr({
+                        for: 'activities',
+                        }).text($(this).attr('name')).prependTo('form');
+                    $('<input>').attr({
+                        type: 'hidden',
+                        name: 'products',
+                        value:$(this).attr('value')
+                        }).prependTo('form');
+        });
+        
+      
+        </script>   
     <script>
         var socket = io('http://localhost:9090');
         $(function(){
@@ -51,4 +130,4 @@
         });
 ;
     </script>
-<%include  footer.ejs %>
+<%include  ../layout/footer.ejs %>

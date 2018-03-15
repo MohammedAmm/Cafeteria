@@ -9,24 +9,32 @@ var uploadMid=multer({
     dest:"./public/imgs"
 });
 var ProductModel=mongoose.model('products');
+var CategoryModel=mongoose.model('categories');
 var OrderModel=mongoose.model('orders');
-
 router.get('/add',function (req,resp) {
     if (!req.session.useremail){
         resp.redirect('/login');
     }
     else{
-        ProductModel.find({},function(err,products){
-        resp.render('orders/add',{products:products});        
+        var categoriesPro;
+        CategoryModel.find({},function(err,categories){
+            categoriesPro=categories;
         });
+        ProductModel.find({},function(err,products){
+            resp.render('orders/add',{products:products,categories:categoriesPro});        
+        });
+
     }
 
 });
 router.post('/add',bodyParserMid,function (req,resp) {
-  
+    console.log(req.body);
     var order = new OrderModel({
         _id:mongoose.Types.ObjectId(),
-        products:req.body.products
+        user:req.session._id,
+        room:req.body.room_no,
+        notes:req.body.notes,
+        products:req.body.products,
         });
     order.save(function (err,doc) { 
         if(!err){

@@ -1,8 +1,8 @@
 var express=require('express');
 var server =express();
+require('./models/categories');
 require('./models/products');
 require('./models/users');
-require('./models/categories');
 require('./models/orders');
 
 var authRoutes=require('./controllers/auth');
