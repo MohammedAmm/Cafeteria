@@ -1,47 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
+<%include  header.ejs %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-
-<body>
-    <% if(msg) { %>
-        <h1>
-            <%= msg %>
-        </h1>
-        <% } %>
-            <% if(err_msg) { %>
-                <ul>
-                    <% err_msg.forEach(function(error){ %>
-                        <li style="color:red">
-                            <%= error %>
-                        </li>
-                        <% }) %>
-                            <% } %>
-                </ul>
 
                 <form action="register" method="post" enctype="multipart/form-data">
-                    Username:
-                    <input type="text" name="name">
-                    <br> Password:
-                    <input type="password" name="password">
-                    <br> Confirm-Password:
-                    <input type="password" name="confpassword">
-                    <br> Email:
-                    <input type="email" name="email">
-                    <br> Room No:
-                    <input type="text" name="room_no">
-                    <br> Ext:
-                    <input type="text" name="ext">
-                    <br> Image:
-                    <input type="file" name="avatar" id="avatar">
-                    <input type="submit" value="Register">
-                    <input type="reset" value="Reset">
+                    <% if(msg) { %>
+                        <h1>
+                            <%= msg %>
+                        </h1>
+                        <% } %>
+                            <% if(err_msg) { %>
+                                <ul>
+                                    <% err_msg.forEach(function(error){ %>
+                                        <li style="color:red">
+                                            <%= error %>
+                                        </li>
+                                        <% }) %>
+                                            <% } %>
+                                </ul>
+                                <p>
+                                        <label for="name" class="floatLabel">Username</label>
+                                        <input id="name" name="username" type="text"
+                                        >
+                                    </p>
+                                    <p>
+                                        <label for="password" class="floatLabel">Password</label>
+                                        <input id="password" name="password" type="password">
+                                        <span>Enter a password longer than 8 characters</span>
+                                    </p>
+                                    <p>
+                                        <label for="confirm_password" class="floatLabel">Confirm Password</label>
+                                        <input id="confirm_password" name="confpassword" type="password">
+                                        <span>Your passwords do not match</span>
+                                    </p>
+                                    <p>
+                                            <label for="name" class="floatLabel">Email</label>
+                                            <input id="name" name="email" type="email"
+                                            >
+                                        </p>
+                                        <p>
+                                                <label for="roomno" class="floatLabel">Room No</label>
+                                                <input id="roomno" name="room_no" type="text"
+                                                >
+                                            </p>
+                                            <p>
+                                                    <label for="ext" class="floatLabel">Ext.</label>
+                                                    <input id="ext" name="ext" type="text"
+                                                    >
+                                                </p>
+                                    <p>
+                                        <button type="submit" id="submit2" >Create My Account</button>
+                            
+                                </p>
+                                <a href="/login">Login</a>
                 </form>
-</body>
-
-</html>
+                <%include  footer.ejs %>

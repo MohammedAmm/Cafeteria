@@ -1,19 +1,68 @@
-<%include  header.ejs %>
-<div class="row">
-    <div class="col-6">
-        <form action="/orders/add" method="post" class="form-control" id="myForm">     
-            <input type="submit" value="Order" id="order">
-        </form>
-        <% products.forEach(function(product){ %>
-            <button value="<%= product._id %>"><%= product.name %></button>
-        <% }) %>
+<%include  ../layout/header.ejs %>
+
+  <!--==============================Content=================================-->
+  
+  <div class="content"><div class="ic">More Website Templates @ TemplateMonster.com - December 02, 2013!</div>
+    <div class="container_12">
+        <h3 style="text-align:center; margin-top:-80px;">Menu</h3>
+        <div class="row">
+            <div class="col-8">           
+           
+                    <div class="div-tabs">
+                        <div  id="" class="tab-content">             
+                                    
+                                        <% products.forEach(function(product){ %>   
+                                            <div class="grid_3">
+                                                    <img src="/imgs/<%= product.img %>" id="<%= product.name %>"alt="" class="gal" name="<%= product.name %>" price="<%= product.price %>" value="<%= product._id %>"><span></span>
+                                                    <div class="col2"><span class="col3"><a href="#"><%= product.name %> </a></span> <%= product.price %></div>
+                                                </div>
+                                        <% }) %>  
+                                   
+                        
+                            <div class="clear"></div>
+                        </div>          
+                    </div>
+                </div>                
+            <div class="col-4">
+                    <div class="tabs tb gallery">
+                            <!-- end of form -->
+                <form action="/orders/add" method="POST"    
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label for="activities">Room</label>
+                               <input type="text"  name="room_no"id="activities" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                        <label for="date-start">Note</label>
+                        <textarea   name="notes" class="form-control" placeholder="Enter your notes here...."></textarea>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <label for="price">Price</label>
+                            <label id="totalPrice" style="margin-left:70%;">0</label><span style="float:right">EGP</span>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                        <input type="submit" class="btn btn-primary btn-block" value="Order Now">
+                        </div>
+                    </div>
+                    <input type="hidden" name="price" id="sendPrice">
+                </form>
+                  
+                
+            </div>
+        </div>
     </div>
-
-</div>
-
-    <script src="/js/jquery-3.2.1.js"></script>   
-    <script src="/js/socket.io.js"></script>
- 
+     
+    </div>
+  </div>
+  
+  <!--==============================footer=================================-->
+    <script src="/js/socket.io.js"></script> 
     <script>
         var products='';
         $(function(){
@@ -26,6 +75,54 @@
             })        
         });
     </script>
+    <script>
+        var totalPrice=$('#totalPrice')[0];
+         inputs='';
+            $("img").one("click",function(){
+                    $('<input>').attr({
+                        type: 'number',
+                        min:0,
+                        id: $(this).attr('name'),
+                        name: $(this).attr('name'),
+                        price:$(this).attr('price'),
+                        class:'form-control ',
+                        value:'1',
+                        style:'margin:20px;'
+                        }).prependTo('form');
+                    
+                    $('<label>').attr({
+                        for: 'activities',
+                        }).text($(this).attr('name')).prependTo('form');
+                    $('<input>').attr({
+                        type: 'hidden',
+                        name: 'products',
+                        value:$(this).attr('value')
+                        }).prependTo('form');
+                        totalPrice=parseInt($(this).attr('price'))+parseInt($('#totalPrice')[0].innerText);
+                            $('#totalPrice')[0].innerText=totalPrice;
+                            $('input').change(function(){
+                                if(parseInt(this.value)&&$('this').attr('price')){
+                                    if (this.getAttribute('value') === this.value) {
+                                        // setting the original 'lastvalue' data property
+                                        $(this).data('lastvalue', this.value);
+                                    } else {
+                                        // take whatever action you require here:
+                                        this.value < $(this).data('lastvalue') ?(totalPrice=parseInt($('#totalPrice')[0].innerText)-parseInt($(this).attr('price')))
+                                        : (totalPrice=parseInt($(this).attr('price'))+parseInt($('#totalPrice')[0].innerText));
+                                        $('#totalPrice')[0].innerText=totalPrice;
+                                        // update the lastvalue data property here:
+                                        $(this).data('lastvalue', this.value);
+                                    }
+                                }
+                                
+                            })
+                            $("#sendPrice").val($('#totalPrice')[0].innerText);
+                });
+                $('inputs').change(function(){
+                  
+                });
+        
+        </script>   
     <script>
         var socket = io('http://localhost:9090');
         $(function(){
@@ -51,4 +148,4 @@
         });
 ;
     </script>
-<%include  footer.ejs %>
+<%include  ../layout/footer.ejs %>

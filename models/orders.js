@@ -7,7 +7,7 @@ var orders=new Schema({
         ref:"users"
     },
     price:String,
-    rooms:String,
+    room:String,
     notes:String,
     products:[{
         type:mongoose.Schema.Types.ObjectId,

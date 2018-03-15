@@ -58,6 +58,11 @@ router.post('/login', bodyParserMid, function (req, resp) {
                 //  correctPassword?console.log("true"):console.log("false");
                 if (correctPassword) {
                     req.session.useremail = useremail;
+                    req.session._id = doc._id;    
+                    req.session.isAdmin='';
+                    if(doc.admin){
+                        req.session.isAdmin=doc.admin;
+                    }          
                     //                    console.log(req.session.useremail);
 
                     return resp.redirect('products/list');
@@ -177,6 +182,8 @@ router.post('/register', upload.single('avatar'), function (req, resp) {
         newUser.save(function (addError, doc) {
             if (!addError) {
                 req.session.useremail = useremail;
+                req.session.id = doc._id;    
+                req.session.isAdmin='';       
                 console.log("Success");
                 resp.redirect('/products/list');
             } else {

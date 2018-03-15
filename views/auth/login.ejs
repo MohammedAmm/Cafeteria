@@ -1,34 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-
-<body>
-    <% if(msg) { %>
-        <h1>
-            <%= msg %>
-        </h1>
-        <% } %>
-            <% if(err_msg) { %>
-                <ul>
-                    <% err_msg.forEach(function(error){ %>
-                        <li style="color:red">
-                            <%= error %>
-                        </li>
-                        <% }) %>
-                            <% } %>
-                </ul>
+<%include  header.ejs %>
 
                 <form action="" method="post">
-                    <input type="email" name="email">
-                    <input type="password" name="password">
-                    <input type="submit" value="Login">
+                        <% if(msg) { %>
+                            <% } %>
+                                <% if(err_msg) { %>
+                                    <ul>
+                                        <% err_msg.forEach(function(error){ %>
+                                            <li style="color:red;font-size:16px;">
+                                                <%= error %>
+                                            </li>
+                                            <% }) %>
+                                                <% } %>
+                                    </ul>
+                    
+                        <p>
+                                <label for="username" class="floatLabel" >Email</label>
+                                <input type="text" name="email" autofocus maxlength="254" required id="id_username"
+                                />
+                              </p>
+                                  <p>
+                                      <label for="password" class="floatLabel">Password</label>
+                                <input type="password" name="password" autofocus maxlength="254" required id="id_password" />
+                                              <span>Enter a password longer than 8 characters</span>
+                              </p>
+                              
+                                  <p>
+                                  <button type="submit" id="submit2" >Login</button>
+                                </p>
+                              <a href="/register">Sign up</a>
                 </form>
-</body>
-
-</html>
+ <%include  footer.ejs %>
