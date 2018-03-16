@@ -58,11 +58,6 @@ router.post('/login', bodyParserMid, function (req, resp) {
                 //  correctPassword?console.log("true"):console.log("false");
                 if (correctPassword) {
                     req.session.useremail = useremail;
-                    req.session._id = doc._id;    
-                    req.session.isAdmin='';
-                    if(doc.admin){
-                        req.session.isAdmin=doc.admin;
-                    }          
                     //                    console.log(req.session.useremail);
 
                     return resp.redirect('products/list');
@@ -109,7 +104,7 @@ router.post('/register', upload.single('avatar'), function (req, resp) {
     var emailValidation = validator.isEmail(useremail, { min: 8 });
     var passValidation1 = validator.matches(pass, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/);
     var passValidation2 = validator.isByteLength(pass, { min: 8 });
-    var room_noValidation = validator.isInt(room_no, { min: 4 });
+    var room_noValidation = validator.isInt(room_no, { min: 1 });
     var extValidation = validator.isInt(ext, { min: 4 });
     
     var nameerr, emailerr, passerr, confpasserr, room_noerr, exterr,imgerr = "";
@@ -182,8 +177,6 @@ router.post('/register', upload.single('avatar'), function (req, resp) {
         newUser.save(function (addError, doc) {
             if (!addError) {
                 req.session.useremail = useremail;
-                req.session.id = doc._id;    
-                req.session.isAdmin='';       
                 console.log("Success");
                 resp.redirect('/products/list');
             } else {
