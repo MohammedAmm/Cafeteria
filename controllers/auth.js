@@ -205,7 +205,6 @@ router.post('/register',  upload.single('avatar'), function (req, resp) {
                 }
             });
         }
-
 });
 router.get('/logout', function (req, resp) {
     req.session.destroy(function () {
