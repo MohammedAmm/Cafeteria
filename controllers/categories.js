@@ -8,8 +8,11 @@ var multer=require('multer');
 var CategoryModel=mongoose.model('categories');
 
 router.get('/add',function (req,resp) {
-    if (!req.session.useremail){
-        resp.redirect('/login');
+    if (!req.session.admin){
+        if (!req.session.username)
+          resp.redirect('/login');
+        else
+            resp.redirect('/orders/add');
     }
     else{
         resp.render('categories/add',{ msg:req.flash("msg"),username:req.session.username});        
@@ -37,8 +40,11 @@ router.post('/add',bodyParserMid,function (req,resp) {
     }
 });
 router.get('/list',function (req,resp) {
-    if (!req.session.useremail){
-        resp.redirect('/login');
+    if (!req.session.admin){
+        if (!req.session.username)
+          resp.redirect('/login');
+        else
+            resp.redirect('/orders/add');
     }
     else{
         CategoryModel.find({})

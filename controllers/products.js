@@ -73,8 +73,11 @@ router.get('/list', function (req, resp) {
     console.log(req.session.useremail);
     console.log(req.session.password);
 
-    if (!req.session.useremail) {
-        resp.redirect('/login');
+    if (!req.session.admin){
+        if (!req.session.username)
+          resp.redirect('/login');
+        else
+            resp.redirect('/orders/add');
     }
     else {
         ProductModel.find({})

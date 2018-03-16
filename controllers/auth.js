@@ -14,11 +14,13 @@ var uploadMid = multer({
 
 var UserModel = mongoose.model('users');
 router.get('/login', function (req, resp) {
-    resp.render('auth/login', {
-        msg: req.flash("msg"),
-        err_msg: errL
-    });
-    errL = [];
+    if(!req.session.username){
+        resp.render('auth/login', {
+            msg: req.flash("msg"),
+            err_msg: errL
+        });
+        errL = []; 
+    }
 });
 router.post('/login', bodyParserMid, function (req, resp) {
     // errL = [];
@@ -85,12 +87,16 @@ router.post('/login', bodyParserMid, function (req, resp) {
 
 });
 router.get('/register', function (req, resp) {
-    resp.render('auth/register', {
-        msg: req.flash("msg"),
-        err_msg: err
+    if(req.session.admin){
+        resp.render('auth/register', {
+            msg: req.flash("msg"),
+            err_msg: err
 
-    });
-    err = [];
+        });
+        err = [];
+    }else{
+        resp.redirect('/orders/add');
+    }
 });
 //to compare hashed bcrypt.compareSync("my password", hash);
 
@@ -100,7 +106,6 @@ const path = require('path');
 const upload = multer({ dest: './public/imgs' });
 server.post('/base64/:filename', base64image(path.join(__dirname, '/public/imgs')));
 router.post('/register',  upload.single('avatar'), function (req, resp) {
-    if(req.session.admin){
         console.log(req.body.name);
         err = [];
         var username = req.body.name;
@@ -206,9 +211,7 @@ router.post('/register',  upload.single('avatar'), function (req, resp) {
                 }
             });
         }
-    }else{
-        resp.redirect('/products/login');
-    }
+
 });
 router.get('/logout', function (req, resp) {
     req.session.destroy(function () {

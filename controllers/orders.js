@@ -53,15 +53,23 @@ router.post('/add',bodyParserMid,function (req,resp) {
 });
 
 router.get('/list',function (req,resp) {
-    OrderModel.find({/*"created_on": {"$gte": req.body.from, "$lt": req.body.to*/})
-    .sort({_id:-1})
-    .populate({path:"products",select:"name"})
-    .populate({path:"user",select:"name"})
-    .then(function (result,err) {
-        if(result){            
-            resp.render('orders/list',{data:result,msg:req.flash('msg'),username:req.session.username});     
-        }
-      });
+    if (!req.session.admin){
+        if (!req.session.username)
+          resp.redirect('/login');
+        else
+            resp.redirect('/orders/add');
+    }else{
+        OrderModel.find({/*"created_on": {"$gte": req.body.from, "$lt": req.body.to*/})
+        .sort({_id:-1})
+        .populate({path:"products",select:"name"})
+        .populate({path:"user",select:"name"})
+        .then(function (result,err) {
+            if(result){            
+                resp.render('orders/list',{data:result,msg:req.flash('msg'),username:req.session.username});     
+            }
+        });
+    }
+    
 
 });
 // router.get('/list',function (req,resp) {
