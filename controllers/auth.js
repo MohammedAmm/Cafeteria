@@ -95,7 +95,8 @@ const base64image = require('base64-image');
 const path = require('path');
 const upload = multer({ dest: './public/imgs' });
 server.post('/base64/:filename', base64image(path.join(__dirname, '/public/imgs')));
-router.post('/register', upload.single('avatar'), function (req, resp) {
+router.post('/register',  upload.single('avatar'), function (req, resp) {
+    console.log(req.body.name);
     err = [];
     var username = req.body.name;
     var pass = req.body.password;
@@ -104,26 +105,23 @@ router.post('/register', upload.single('avatar'), function (req, resp) {
     var room_no = req.body.room_no;
     var ext = req.body.ext;
 
-    var nameValidation1 = validator.isAlpha(username);
-    var nameValidation2 = validator.isLength(username, { min: 8 });
-    var emailValidation = validator.isEmail(useremail, { min: 8 });
-    var passValidation1 = validator.matches(pass, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/);
-    var passValidation2 = validator.isByteLength(pass, { min: 8 });
-    var room_noValidation = validator.isInt(room_no, { min: 4 });
-    var extValidation = validator.isInt(ext, { min: 4 });
-    
-    var nameerr, emailerr, passerr, confpasserr, room_noerr, exterr,imgerr = "";
-    if(!req.file.mimetype.match('image.*')){
-       // console.log("valide");
-       imgerr="Not valide file type, image only allowed";
-    }
     if (useremail == "" || pass == "" || username == "" || confpass == "" || room_no == "" || ext == "") {
         req.flash("msg", "All Feilds Are Required");
         return resp.redirect('register');
     }
     else {
-
-
+        var nameValidation1 = validator.isAlpha(username);
+        var nameValidation2 = validator.isLength(username, { min: 8 });
+        var emailValidation = validator.isEmail(useremail, { min: 8 });
+        var passValidation1 = validator.matches(pass, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/);
+        var passValidation2 = validator.isByteLength(pass, { min: 8 });
+        var room_noValidation = validator.isInt(room_no, { min: 4 });
+        var extValidation = validator.isInt(ext, { min: 4 });
+        var nameerr, emailerr, passerr, confpasserr, room_noerr, exterr,imgerr = "";
+        if(!req.file.mimetype.match('image.*')){
+           // console.log("valide");
+           imgerr="Not valide file type, image only allowed";
+        }
         if (!nameValidation1 || !nameValidation2) {
             nameerr = 'Username Must Contain At Least 8 Characters And Only Characters';
             err.push(nameerr);

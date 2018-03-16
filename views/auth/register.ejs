@@ -1,7 +1,7 @@
 <%include  header.ejs %>
 
 
-                <form action="register" method="post" enctype="multipart/form-data">
+                <form action="register" method="post" enctype="multipart/form-data" >
                     <% if(msg) { %>
                         <h1>
                             <%= msg %>
@@ -46,6 +46,11 @@
                                                     <input id="ext" name="ext" type="text"
                                                     >
                                                 </p>
+                                                <p>
+                                                    <label for="ext" class="floatLabel">Ext.</label>
+                                                    <input type="file" name="avatar" id="avatar">
+                                                </p>
+                                           
                                     <p>
                                         <button type="submit" id="submit2" >Create My Account</button>
                             

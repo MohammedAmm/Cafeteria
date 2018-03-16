@@ -6,9 +6,6 @@
 
 
 <% data.forEach(function(order){ %>
-
-
-
 <table class="table table-bordered">
     <tr>    
         <th>
@@ -24,7 +21,9 @@
    
 <tr>
     <td>
-        <%= order.user.name %>
+        <%if(order.user){%>
+            <%= order.user.name %>
+            <%}%>
     </td>
     <td>
         <%= order.price %>
@@ -47,7 +46,6 @@
         </th>
       
     </tr>
-   
         <tr>
             <td>
                 <%= order.date %>
@@ -56,9 +54,6 @@
                 <%= order.price %>
 
             </td>
-           
-       
 </table>
-
 <% }) %>
 <%include   ../layout/footer.ejs %>
