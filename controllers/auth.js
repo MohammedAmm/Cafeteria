@@ -188,13 +188,7 @@ router.post('/register',  upload.single('avatar'), function (req, resp) {
             });
             newUser.save(function (addError, doc) {
                 if (!addError) {
-                    req.session.useremail = useremail;
-                    req.session.username = doc.name;
-                    req.session._id = doc._id;
-                    req.session.photo=doc.img;
-                    req.session.admin='';                    
-                    console.log("Success");
-                    resp.redirect('/orders/add');
+                    resp.redirect('/orders/list');
                 } else {
                     //resp.json(addError);
                     switch (addError.code) {
