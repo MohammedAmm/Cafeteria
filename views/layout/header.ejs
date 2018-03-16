@@ -53,12 +53,16 @@
         <nav id="bt-menu" class="bt-menu">
             <a href="#" class="bt-menu-trigger" ><span>Menu</span></a>
             <ul>
-              <li class="bt-icon "><a href="/category/list">Categories</a></li>
+            <li class="bt-icon "><a href="/category/list">Categories</a></li>
             <li class="bt-icon"><a href="/products/list">Products</a></li>
             <li class="bt-icon"><a href="/orders/list">Menu</a></li>
             <li class="bt-icon"><a href="/orders/list">Comming Orders</a></li>
             </ul>
           </nav>
+          <%if(username){%>
+            <span id="userName" style="float: right;color:slategrey"><%=username%></span>
+
+            <%}%>
     <div class="clear"></div>
     </div>
     <div class="clear"></div>

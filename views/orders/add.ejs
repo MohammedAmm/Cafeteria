@@ -45,7 +45,7 @@
                     </div>
                     <div class="row form-group">
                         <div class="col-md-12">
-                        <input type="submit" class="btn btn-primary btn-block" value="Order Now">
+                        <input type="submit" class="btn btn-primary btn-block" id="order" value="Order Now">
                         </div>
                     </div>
                     <input type="hidden" name="price" id="sendPrice">
@@ -73,8 +73,10 @@
     </script>
     <script>
         var totalPrice=$('#totalPrice')[0];
+        var myProducts=[];
          inputs='';
             $("img").one("click",function(){
+                     myProducts.push($(this).attr('name'));
                     $('<input>').attr({
                         type: 'number',
                         min:0,
@@ -122,26 +124,13 @@
     <script>
         var socket = io('http://localhost:9090');
         $(function(){
-            var send=$('#send');
             var order=$('#order');
             var username=$('#username');
             var admin=$('#admin');
-            
-            send.click(function(){
-                console.log(admin.val());
-                socket.emit('user_data',{username:username.val(),admin:admin.val()})
-                username.val("");
-                admin.val("");                
-
-            });
+            socket.emit('user_data',{username:$('#userName').text(),admin:""})
             order.click(function(){
-                socket.emit('request_order',products);
-
+                socket.emit('request_order',{username:$('#userName').text(),price:$('#totalPrice')[0].innerText,products:myProducts});
             })
         });
-        socket.on("client_order",(data)=>{
-            alert(data);
-        });
-;
     </script>
 <%include  ../layout/footer.ejs %>

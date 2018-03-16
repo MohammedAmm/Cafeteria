@@ -9,6 +9,7 @@ var orders=new Schema({
     price:String,
     room:String,
     notes:String,
+    status:String,
     date:{
         type:Date,
         default:Date.now

@@ -1,5 +1,5 @@
 <%include   ../layout/header.ejs %>
-<h1>Orders List</h1>
+<h1 id="orderList">Orders List</h1>
 <% if(!msg){ %>
     <h3 class="alert alert-success"><%= msg %></h3>
     <% }%>
@@ -15,6 +15,23 @@
         <th>
             Price
         </th>
+        <%if(order.notes){%>
+        <th>
+            Notes
+        </th>
+        <%}%>
+
+        <th>
+            Products
+        </th>
+        <th>
+            Date
+        </th>
+        <th>Status</th>
+        <%if(order.status=="Waiting"){%>
+            <th>Action</th> 
+        <%}%>      
+
       
     </tr>
 </tr>
@@ -29,31 +46,43 @@
         <%= order.price %>
 
     </td>
-   
+    <%if(order.notes){%>
 
-       
+    <td>
+        <%= order.notes %>
+
+    </td>
+    <%}%>
+
+    <td>
+        <% (order.products).forEach(function(product){ %>
+            <%= product.name %>,
+        <%})%>
+    </td>
+    <td>
+        <%= order.date %>
+    </td>
+    <td>
+        <%= order.status %>
+    </td>
+    <td>
+        <%if(order.status=="Waiting"){%>
+            <a class="btn btn-primary" href="/orders/deliver/<%= order._id %>">Deliver</a></td> 
+        <%}%>           
+    </td>
 </table>
 <% }) %>
-<% data.forEach(function(order){ %>
-<table class="table table-bordered">
-    <tr>    
-        <th>
-            order date
-        </th>
-            
-        <th>
-            Price
-        </th>
-      
-    </tr>
-        <tr>
-            <td>
-                <%= order.date %>
-            </td>
-            <td>
-                <%= order.price %>
-
-            </td>
-</table>
-<% }) %>
+<script src="/js/socket.io.js"></script> 
+<script>
+        var socket = io('http://localhost:9090');
+        $(function(){
+            socket.emit('user_data',{username:$('#userName').text(),admin:"admin"})
+        });
+        socket.on("client_order",(data)=>{
+            document.title += "(1)";
+            alert("New Order From :"+data['username']);
+            location.reload();
+        });
+;
+    </script>
 <%include   ../layout/footer.ejs %>

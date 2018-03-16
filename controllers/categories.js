@@ -12,7 +12,7 @@ router.get('/add',function (req,resp) {
         resp.redirect('/login');
     }
     else{
-        resp.render('categories/add',{ msg:req.flash("msg")});        
+        resp.render('categories/add',{ msg:req.flash("msg"),username:req.session.username});        
     }
 });
     // var CategoryModel=mongoose.model('posts');
@@ -46,7 +46,7 @@ router.get('/list',function (req,resp) {
         .populate({path:"user",select:"name"})
         .then(function (result,err) {
             if(result){
-                resp.render('categories/list',{data:result,msg:req.flash('msg')});     
+                resp.render('categories/list',{data:result,msg:req.flash('msg'),username:req.session.username});     
             }
         });
     }

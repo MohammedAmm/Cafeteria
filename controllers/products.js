@@ -19,7 +19,7 @@ router.get('/add', function (req, resp) {
     }
     else {
         CategoryModel.find({}, function (err, categories) {
-            resp.render('products/add', { msg: req.flash("msg"), err_msg: priceerr, categories: categories });
+            resp.render('products/add', { msg: req.flash("msg"), err_msg: priceerr, categories: categories,username:req.session.username });
         });
     }
 
@@ -82,7 +82,7 @@ router.get('/list', function (req, resp) {
             .populate({ path: "category", select: "name" })
             .then(function (result, err) {
                 if (result) {
-                    resp.render('products/list', { data: result, msg: req.flash('msg') });
+                    resp.render('products/list', { data: result, msg: req.flash('msg') ,username:req.session.username});
                 }
             });
     }
@@ -102,7 +102,7 @@ router.get('/edit/:id', function (req, resp) {
         ncategories = categories;
     });
     ProductModel.findOne({ _id: req.params.id }, function (err, doc) {
-        resp.render('products/edit', { obj: doc, categories: ncategories });
+        resp.render('products/edit', { obj: doc, categories: ncategories ,username:req.session.username});
     })
 });
 router.post('/edit', upload.single('avatar'), function (req, resp) {

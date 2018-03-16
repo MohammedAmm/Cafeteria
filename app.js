@@ -14,7 +14,6 @@ var ordersRoutes=require('./controllers/orders');
 var mongoose=require('mongoose');
 var session=require('express-session');
 var flash=require('connect-flash');
-
 mongoose.connect("mongodb://localhost:27017/cafeteria");
 server.use(session({
     secret:"@#%#$^$%",
@@ -55,16 +54,16 @@ io.on('connection', function(socket){
     //default username
     socket.username="Anonymous";
     socket.on('user_data', function(data) {
+        console.log(data);
         socket.username=data.username;
         socket.admin=data.admin;
-        console.log(data);
         if(data.admin=="admin"){
             admins.push(socket.id);
-            console.log(admins[0]);
-            
+            console.log(admins[0]);      
         }
      });
     socket.on('request_order',function (data) {
+        console.log(data);
         admins.forEach(function (admin) {
             io.sockets.to(admin).emit('client_order',data);
           })
