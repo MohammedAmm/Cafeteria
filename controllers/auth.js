@@ -207,7 +207,7 @@ router.post('/register',  upload.single('avatar'), function (req, resp) {
             });
         }
     }else{
-        resp.redirect('/products/login');
+        resp.redirect('/orders/add');
     }
 });
 router.get('/logout', function (req, resp) {
